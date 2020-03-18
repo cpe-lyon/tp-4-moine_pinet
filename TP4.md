@@ -27,11 +27,11 @@ Commandes :
 * *cd test* => permet de se déplacer dans le répertoire *test*
 * *touch fichier* => permet de créer le fichier *fichier* dans *~/test/*
 * *nano fichier* => permet d'éditer le fichier *fichier* et d'y taper du texte
-* *ls -l* => permet d'afficher le contenu du répertoire courant (si la commande *ls -l* n'a pas d'argument), en l'occurence, dans le cas présent, le répertoire *test*. Cette commande affiche aussi les droits relatifs aux fichiers contenus dans le répertoire. Le résultat de la commande est donnée ci-dessous (voir *bis_1*).
+* *ls -l* => permet d'afficher le contenu du répertoire courant (si la commande *ls -l* n'a pas d'argument), en l'occurence, dans le cas présent, le répertoire *test*. Cette commande affiche aussi les droits relatifs aux fichiers contenus dans le répertoire. Le résultat de la commande est donnée ci-dessous (voir ***bis_1***).
 * *cd $HOME* => voir ci-dessus pour explications
-* *ls -l* => permet de voir le contenu de $HOME dans le cas présent. Le résultat de la commande est donnée ci-dessous (voir *bis_2*).
+* *ls -l* => permet de voir le contenu de $HOME dans le cas présent. Le résultat de la commande est donnée ci-dessous (voir ***bis_2***).
 
-**bis_1 :**
+***bis_1 :***
 
 Les droits relatifs à *test* sont **drwxrwxrwx** :
 
@@ -40,7 +40,7 @@ Les droits relatifs à *test* sont **drwxrwxrwx** :
       w => write  (droits d'écritures)      => pour utilisateur/groupe_propriétaire/autres
       x => execute (droit d'éxécution)      => pour utilisateur/groupe_propriétaire/autres
 
-**bis_2:**
+***bis_2:***
 
 Les droits relatifs à *fichier* sont **-rw-rw-r--** :
 
@@ -51,19 +51,44 @@ Les droits relatifs à *fichier* sont **-rw-rw-r--** :
 
 **NB** : Les permissions accordées par défaut sont celles déterminées par un paramètre particulier appelé le masque utilisateur (ou user mask). Il est important de noter que l'opération qui retourne les droits relatifs à un fichier est différente en fonction des types de base (fichier ou répertoire). En soit, elle réalise la complémentation entre le masque de l'utilisateur et 0666(8) ((8) siginifie base 8) sur un type *fichier*, soit, si le masque est nulle, on associe les droits **-rw-rw-rw** ; alors que pour un *répertoire* c'est 0777(8), soit les droits **drwxrwxrwx** si le masque est nulle.
 
-Dans Ubuntu, le masque utilisateur généralement definit par défaut par l'administrateur est **umask = 022**, soit il accorde les permissions **rwxr-xr-x**:
+Dans Ubuntu, le masque utilisateur généralement définit par défaut par l'administrateur est **umask = 022**, soit il accorde les permissions **rwxr-xr-x**:
 
 * le propriétaire du fichier dispose des permissions de lecture, d'écriture et d'exécution ;
 * le groupe propriétaire dispose des droits de lecture et d'exécution, mais pas d'écriture ;
 * le reste du monde dispose des droits de lecture et d'exécution, mais pas d'écriture.
 
-2.Retirez tous les droits sur ce fichier (même pour vous), puis essayez de le modifier et de l’aﬀicher entant queroot. Conclusion?
+2.Retirez tous les droits sur ce fichier (même pour vous), puis essayez de le modifier et de l’aﬀicher en tant queroot. Conclusion?
 
-3.Redonnez vous les droits en écriture et exécution surfichierpuis exécutez la commandeecho "echoHello" > fichier. On a vu lors des TP précédents que cette commande remplace le contenu d’unfichier s’il existe déjà. Que peut-on dire au sujet des droits?
+
+Commandes :
+
+* *cd ~/test*
+* *chmod a-rwx fichier* => retire tous droits sur ce fichier (en ce sens les droits de lecture, écriture, éxécution) pour tous le monde (u;g;o)
+* *nano fichier* => impossible de voir le contenu de *fichier* ou même d'écrire dedans
+* *sudo nano fichier* => possibilité d'éditer et de voir le contenu de *fichier* en étant super-utilisateur
+
+**Conclusion :** Quelques soit le masque utilisteur ou bien les droits associés au fichier *test*, le super-utilisateur (ou *root*) a la possibilité de modifier, décrire ou bien d'éxécuter un fichier. Il possède tous les droits et ceux, quelques soit la configuration du serveur.
+
+3.Redonnez vous les droits en écriture et exécution sur *fichier* puis exécutez la commande *echo "echo Hello" > fichier*. On a vu lors des TP précédents que cette commande remplace le contenu d’un fichier s’il existe déjà. Que peut-on dire au sujet des droits?
+
+Commandes :
+
+* *echo "echo Hello" > fichier* => remplace le contenu de *fichier* (s’il existe déjà) par "echo Hello"
+
+**NB** : Il est important de noter que seul le droit en écriture ne nous aurez pas suffit. En ce sens, il nécessaire d'avoir les droits d'éxécutions pour pouvoir éxécuter une commande sur le dit *fichier*. En outre le droit en écriture et éxécution nous permet d'avoir l'intégrité des droits nécessaire pour écrire sans problème. 
 
 4.Essayez d’exécuter le fichier. Est-ce que cela fonctionne? Et avec sudo? Expliquez.
 
-5.Placez-vous dans le répertoiretest, et retirez-vous le droit en lecture pour ce répertoire. Listez lecontenu du répertoire, puis exécutez ou aﬀichez le contenu du fichierfichier. Qu’en déduisez-vous?Rétablissez le droit en lecture surtest
+Commandes :
+
+* *cat fichier* => impossibilité d'éxécuter la commande *cat*
+* *sudo cat fichier* => affiche : "echo Hello"
+
+**NB**: Comme énoncé précedemment, il est impossible de réalisé l'éxécution de la commande *cat* sur *fichier*. Pour cela, il faut les droits de lecture, qui ne sont pas présent sur le dit *fichier*. Ne sont présent que les droits écriture et éxécution pour l'utilisateur (en l'occurence nous-même)
+
+5.Placez-vous dans le répertoire *test*, et retirez-vous le droit en lecture pour ce répertoire. Listez le contenu du répertoire, puis exécutez ou aﬀichez le contenu du fichier *fichier*. Qu’en déduisez-vous? Rétablissez le droit en lecture sur *test*.
+
+
 
 6.Créez dans test un fichiernouveauainsi qu’un répertoiresstest. Retirez au fichiernouveauet aurépertoiretestle droit en écriture. Tentez de modifier le fichiernouveau. Rétablissez ensuite le droiten écriture au répertoiretest. Tentez de modifier le fichiernouveau, puis de le supprimer. Que pouvez-vous déduire de toutes ces manipulations?
 
