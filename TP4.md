@@ -18,7 +18,44 @@ Ce sont ces lettres qui sont utilisées pour symboliser les dites permissions. S
 
 ## 2.2 Exercice
 
-1.Dans votre$HOME, créez un dossiertest, et dans ce dossier un fichierfichiercontenant quelqueslignes de texte. Quels sont les droits surtestetfichier?
+1.Dans votre **$HOME**, créez un dossier *test*, et dans ce dossier un fichier *fichier* contenant quelques lignes de texte. Quels sont les droits sur *test* et *fichier* ?
+
+Commandes :
+
+* *cd $HOME* => permet de se déplacer dans le répertoire associé à la variable d'environnement **HOME**
+* *mkdir test* => permet de créer le dossier *test* (qui se trouvera, en conséquence, d'après la commande ci-dessus, dans *~/*)
+* *cd test* => permet de se déplacer dans le répertoire *test*
+* *touch fichier* => permet de créer le fichier *fichier* dans *~/test/*
+* *nano fichier* => permet d'éditer le fichier *fichier* et d'y taper du texte
+* *ls -l* => permet d'afficher le contenu du répertoire courant (si la commande *ls -l* n'a pas d'argument), en l'occurence, dans le cas présent, le répertoire *test*. Cette commande affiche aussi les droits relatifs aux fichiers contenus dans le répertoire. Le résultat de la commande est donnée ci-dessous (voir *bis_1*).
+* *cd $HOME* => voir ci-dessus pour explications
+* *ls -l* => permet de voir le contenu de $HOME dans le cas présent. Le résultat de la commande est donnée ci-dessous (voir *bis_2*).
+
+**bis_1 :**
+
+Les droits relatifs à *test* sont **drwxrwxrwx** :
+
+      d => répertoire 
+      r => read   (droits de lectures)      => pour utilisateur/groupe_propriétaire/autres
+      w => write  (droits d'écritures)      => pour utilisateur/groupe_propriétaire/autres
+      x => execute (droit d'éxécution)      => pour utilisateur/groupe_propriétaire/autres
+
+**bis_2:**
+
+Les droits relatifs à *fichier* sont **-rw-rw-r--** :
+
+      - => fichier 
+      r => read   (droits de lectures)      => pour utilisateur/groupe_propriétaire/autres
+      w => write  (droits d'écritures)      => pour utilisateur/groupe_propriétaire
+      x => execute (droit d'éxécution)      => personne n'a ce droit
+
+**NB** : Les permissions accordées par défaut sont celles déterminées par un paramètre particulier appelé le masque utilisateur (ou user mask). Il est important de noter que l'opération qui retourne les droits relatifs à un fichier est différente en fonction des types de base (fichier ou répertoire). En soit, elle réalise la complémentation entre le masque de l'utilisateur et 0666(8) ((8) siginifie base 8) sur un type *fichier*, soit, si le masque est nulle, on associe les droits **-rw-rw-rw** ; alors que pour un *répertoire* c'est 0777(8), soit les droits **drwxrwxrwx** si le masque est nulle.
+
+Dans Ubuntu, le masque utilisateur généralement definit par défaut par l'administrateur est **umask = 022**, soit il accorde les permissions **rwxr-xr-x**:
+
+* le propriétaire du fichier dispose des permissions de lecture, d'écriture et d'exécution ;
+* le groupe propriétaire dispose des droits de lecture et d'exécution, mais pas d'écriture ;
+* le reste du monde dispose des droits de lecture et d'exécution, mais pas d'écriture.
 
 2.Retirez tous les droits sur ce fichier (même pour vous), puis essayez de le modifier et de l’aﬀicher entant queroot. Conclusion?
 
