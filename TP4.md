@@ -215,4 +215,17 @@ Commandes :
 
 * *stats /etc/passwd* => affiche : -rw-r--r-- => autorise l'utilisateur à lire/écrire *passwd* mais n'autorise le reste qu'à lire *passwd*
 
+La contenance du fichier *passwd* est la suivante :
+
+* nom de l'utilisateur pour l'identification sur le système (login)
+* mot de passe chiffré
+* numéro d'utilisateur (uid)
+* numéro de groupe d'utilisateur par défaut (gid). Tout utilisateur est affecté à un et un seul groupe de base. Il peut, par ailleurs, faire partie d'un grand nombre d'autres groupes.
+* nom complet. Ce champ peut contenir de nombreuses informations, il correspond à un champ de remarque
+* répertoire de base de l'utilisateur
+* programme à lancer au démarrage (programme de base), généralement un interpréteur de commande (shell).
+
+En ce sens, *passwd* permet d'accéder au mot de passe de l'utilisateur et de le modifier. Il paraît ainsi logique de n'autoriser la modification qu'à l'utilisateur, propriétaire du mot de passe, afin de le protéger de personnes mal intentionées. De plus, la lecture est tout de même possible pour le groupe propriétaire et les autres. Le mot de passe étant chiffré, cela ne pose aucunement problème d'ouvrir lecture de ce fichier si ce n'est que malgrès que le mot de passe soit chiffré, il exite des casseurs de code. Si ce mot de passe s'avère trop "simple", alors l'attaquant pourra récupérer le mot de passe en "clear" après avoirs cassé le code chiffré à l'aide d'un casseur de code. En outre, peut-être faudrait-il interdire la lecture aux reste (g;o) pour plus de sécurité.
+
+
 
