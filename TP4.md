@@ -57,19 +57,19 @@ Dans Ubuntu, le masque utilisateur généralement définit par défaut par l'adm
 * le groupe propriétaire dispose des droits de lecture et d'exécution, mais pas d'écriture ;
 * le reste du monde dispose des droits de lecture et d'exécution, mais pas d'écriture.
 
-2.Retirez tous les droits sur ce fichier (même pour vous), puis essayez de le modifier et de l’aﬀicher en tant queroot. Conclusion?
+2.Retirez tous les droits sur ce fichier (même pour vous), puis essayez de le modifier et de l’aﬀicher en tant queroot. Conclusion ?
 
 
 Commandes :
 
 * *cd ~/test*
-* *chmod a-rwx fichier* => retire tous droits sur ce fichier (en ce sens les droits de lecture, écriture, éxécution) pour tous le monde (u;g;o)
+* *chmod u-rwx fichier* => retire tous droits sur ce fichier (en ce sens les droits de lecture, écriture, éxécution) pour nous
 * *nano fichier* => impossible de voir le contenu de *fichier* ou même d'écrire dedans
 * *sudo nano fichier* => possibilité d'éditer et de voir le contenu de *fichier* en étant super-utilisateur
 
 **Conclusion :** Quelques soit le masque utilisteur ou bien les droits associés au fichier *test*, le super-utilisateur (ou *root*) a la possibilité de modifier, décrire ou bien d'éxécuter un fichier. Il possède tous les droits et ceux, quelques soit la configuration du serveur.
 
-3.Redonnez vous les droits en écriture et exécution sur *fichier* puis exécutez la commande *echo "echo Hello" > fichier*. On a vu lors des TP précédents que cette commande remplace le contenu d’un fichier s’il existe déjà. Que peut-on dire au sujet des droits?
+3.Redonnez vous les droits en écriture et exécution sur *fichier* puis exécutez la commande *echo "echo Hello" > fichier*. On a vu lors des TP précédents que cette commande remplace le contenu d’un fichier s’il existe déjà. Que peut-on dire au sujet des droits ?
 
 Commandes :
 
@@ -77,7 +77,7 @@ Commandes :
 
 **NB** : Il est important de noter que seul le droit en écriture ne nous aurez pas suffit. En ce sens, il nécessaire d'avoir les droits d'éxécutions pour pouvoir éxécuter une commande sur le dit *fichier*. En outre le droit en écriture et éxécution nous permet d'avoir l'intégrité des droits nécessaire pour écrire sans problème. 
 
-4.Essayez d’exécuter le fichier. Est-ce que cela fonctionne? Et avec sudo? Expliquez.
+4.Essayez d’exécuter le fichier. Est-ce que cela fonctionne ? Et avec sudo ? Expliquez.
 
 Commandes :
 
@@ -86,28 +86,133 @@ Commandes :
 
 **NB**: Comme énoncé précedemment, il est impossible de réalisé l'éxécution de la commande *cat* sur *fichier*. Pour cela, il faut les droits de lecture, qui ne sont pas présent sur le dit *fichier*. Ne sont présent que les droits écriture et éxécution pour l'utilisateur (en l'occurence nous-même)
 
-5.Placez-vous dans le répertoire *test*, et retirez-vous le droit en lecture pour ce répertoire. Listez le contenu du répertoire, puis exécutez ou aﬀichez le contenu du fichier *fichier*. Qu’en déduisez-vous? Rétablissez le droit en lecture sur *test*.
+5.Placez-vous dans le répertoire *test*, et retirez-vous le droit en lecture pour ce répertoire. Listez le contenu du répertoire, puis exécutez ou aﬀichez le contenu du fichier *fichier*. Qu’en déduisez-vous ? Rétablissez le droit en lecture sur *test*.
+
+Commandes :
+
+* *cd ~/test*
+* *chmod u-r ~/test* => retire le droit de lecture à l'utilisateur (nous-même)
+* *ls -l* => impossible de lire le contenu. En effet, il faut les droits de lecture du répertoire pour pouvoir en lister le contenu
+
+6.Créez dans test un fichier *nouveau* ainsi qu’un répertoire *sstest*. Retirez au fichier *nouveau* et au répertoire *test* le droit en écriture. Tentez de modifier le fichier *nouveau*. Rétablissez ensuite le droit en écriture au répertoire *test*. Tentez de modifier le fichier *nouveau*, puis de le supprimer. Que pouvez-vous déduire de toutes ces manipulations ?
+
+Commandes :
+
+* *cd ~/test*
+* *touch nouveau* => crée le fichier *nouveau* dans le répertoire test
+* *cd* => retourne dans le répertoire **HOME**
+* *mkdir sstest* => crée le répertoire *sstest*
+* *chmod a-w test* => retire le droit en écriture du répertoire *test* à tous le monde (u;g;o)
+* *cd test*
+* *chmod a-w nouveau* => retire le droit en ériture du fichier *nouveau* à tous le monde (u;g;o)
+* *nano nouveau* => impossibilité d'enregistrer les modifications (soit d'écrire dans le fichier *nouveau*)
+* *chmod a+w ~/test* => accorde le droit en écriture du répertoire *test* à tous le monde (u;g;o)
+* *nano nouveau* => impossibilité d'enregistrer les modifications (soit d'écrire dans le fichier *nouveau*)
+* *rm nouveau* => impossibilité de supprimer *nouveau*
+
+**NB** : ainsi, il est impossible de modifier ou de supprimer un fichier sur lequel les droits en écriture ne sont pas accordés, et ceux malgrès que les droits en écriture sur le répertoire contenant ce-même fichier soit accordés.
+
+7.Positionnez vous dans votre répertoire personnel, puis retirez le droit en exécution du répertoire *test*. Tentez de créer, supprimer, ou modifier un fichier dans le répertoire *test*, de vous y déplacer, d’en lister le contenu, etc ... Qu’en déduisez vous quant au sens du droit en exécution pour les répertoires ?
+
+Commandes :
+
+* *cd* 
+* *chmod a-x test* => retire le droit en éxécution du répertoire *test* à tous le monde (u;g;o)
+* *cd test* => échec du déplacement dans le répertoire *test*
+* *chmod a+x test* => octroie le droit en éxécution du répertoire *test* à tous le monde (u;g;o)
+* *cd *test* => déplacement dans le répertoire *test*
+* *chmod a-x ~/test* => retire le droit en éxécution du répertoire *test* à tous le monde (u;g;o)
+* *touch newup* => échec de la création de fichier *newup* dans le répertoire *test* => nécessite les droits d'éxécution sur le répertoire *test*
+* *rm nouveau* => échec de la suppression du fichier *nouveau* dans le répertoire => nécessite les droits d'éxécution sur le répertoire *test*
+* *ls -l* => échec de la commande de listage des éléments du répertoire *test* => nécessite les droits d'éxécution sur le répertoire *test*
+
+**NB** : Il est, en ce sens, d'après l'ensemble des commandes réalisées ci-dessus, important de déduire que quelquse soit les actions entreprises sur un répertoire, si ce dernier ne possède pas les droits d'éxécutions asociés, toutes seront vouées à échouer. Le droit d'éxécution est donc primordial pour entreprendre une quelconque action sur un répertoire.
+
+8.Rétablissez le droit en exécution du répertoire *test*. Positionnez vous dans ce répertoire et retirez lui à nouveau le droit d’exécution. Essayez de créer, supprimer et modifier un fichier dans le répertoire *test*, de vous déplacer dans *sstest*, de lister son contenu. Qu’en concluez-vous quant à l’influence des droits que l’on possède sur le répertoire courant ? Peut-on retourner dans le répertoire parent avec ”cd..” ? Pouvez-vous donner une explication ?
+
+Commandes :
+
+* *chmod a+x ~/test* => octroie le droit en éxécution du répertoire *test* à tous le monde (u;g;o)
+* *cd ~/test*
+* *chmod a-x ~/test* => retire le droit en éxécution du répertoire *test* à tous le monde (u;g;o)
+* *rm nouveau* => échec de la suppression du fichier *nouveau* dans le répertoire => nécessite les droits d'éxécution sur le répertoire *test*
+* *nano fichier* => impossibilité de créé ou éditer un fichier existant => nécessite les droits d'éxécution sur le répertoire *test*
+* *touch newup* => échec de la création de fichier *newup* dans le répertoire *test* => nécessite les droits d'éxécution sur le répertoire *test*
+* *ls -l ~/sstest* => liste le contenu de sstest
+* *cd ..* => remonte dans le répertoire parent
+* *cd ~/sstest* => se déplace dans sstest
+
+**NB** : 
+En ce sens les droits d'éxécutions n'influent que sur le répertoire courant ainsi que l'ensemble des actions (lire,écrire,supprimer) réaliser dans (ou sur)	ce dernier. Malgrès cela, il est toujours possible, depuis un répertoire sans	droit d'éxécutions de lire le contenu, écrire ou supprimer des fichiers dans des répertoires différents (où le droit d'éxécution est alloué) en passant en argument le chemin  absolu de ce dit répertoire (où le droit d'éxécution est alloué) aux commandes bash.
+	
+Il est possible de retourner dans le répertoire parent depuis *test* (sans droit d'éxécution) avec la commande *cd ..* . En effet cd à pour but de changer le répertoire courant en DIR sachant que le répertoire par défaut est la valeur de la  variable d'environnement **HOME**. Par la suite cd recherche le répertoire souhaité avec la variable CDPATH qui définit le chemin de recherche du répertoire contenant DIR. En ce sens, le point de départ de recherche est le répertoire **HOME**. En outre, *cd* s'éxécutera si il trouve le répertoire à partir de ce point de départ : la commande ne passe donc aucunement par le fichier *test* pour s'éxécuter, d'où la réussite dans l'éxécution de *cd ~/sstest*.
+
+9.Rétablissez le droit en exécution du répertoire *test*. Attribuez au fichier *fichier* les droits suﬀisants pour qu’une autre personne de votre groupe puisse y accéder en lecture, mais pas en écriture.
+
+* *chmod a+x ~/test* => octroie le droit en éxécution du répertoire *test* à tous le monde (u;g;o)
+* *chmod g-w ~/test/fichier* => retire le droit d'écriture pour le groupe propriétaire du fichier (g)
+* *chmod o-w ~/test/fichier* => retire le droit d'écriture pour les autres (o)
+
+**NB** : Il nécessaire, pour le groupe propriétaire du fichier et les autres (g et o) de posséder les droits de lecture et d'éxécution pour pouvoir rentrer dans le répertoire *test* puis d'en lire le contenu comme expliqué ci-dessus.
 
 
+10.Définissez un umask très restrictif qui interdit à quiconque à part vous l’accès en lecture ou en écriture, ainsi que la traversée de vos répertoires. Testez sur un nouveau fichier et un nouveau répertoire.
 
-6.Créez dans test un fichiernouveauainsi qu’un répertoiresstest. Retirez au fichiernouveauet aurépertoiretestle droit en écriture. Tentez de modifier le fichiernouveau. Rétablissez ensuite le droiten écriture au répertoiretest. Tentez de modifier le fichiernouveau, puis de le supprimer. Que pouvez-vous déduire de toutes ces manipulations?
+*umask* fonctionne de la manière suivante : sur une base de 0777(8) pour les répertoires (définissant, si le masque est nul, le droit **drwxrwxrwx**) et 0666(8) pour les fichiers (définissant, si le masque est nul, le droit **-rw-rw-rw-**), on retranche la valeur en octal spécifié en argument de la commande umask. En ce sens, on calcul la valeur en octal à retrancher, d'après la définition donnée en **2.1** (voir ci-dessus) des droits de permissions :
 
-7.Positionnez vous dans votre répertoire personnel, puis retirez le droit en exécution du répertoiretest.Tentez de créer, supprimer, ou modifier un fichier dans le répertoiretest, de vous y déplacer, d’enlister le contenu, etc...Qu’en déduisez vous quant au sens du droit en exécution pour les répertoires?
+* *umask 077* 
+* *umask -S* => affiche : (u=rwx,g=,o=) => interdit à quiconque à part à l'utilisateur (nous) l’accès en lecture ou en écriture, ainsi que la traversée de vos répertoires
+* *touch newfile* => crée le fichier *newfile*
+* *mkdir newrep* => crée le répertoire *newrep*
+* *ls -l* =>  donne pour résultat : drwx------ newrep ; -rw------- newfile
 
-8.Rétablissez le droit en exécution du répertoiretest. Positionnez vous dans ce répertoire et retirez luià nouveau le droit d’exécution. Essayez de créer, supprimer et modifier un fichier dans le répertoiretest, de vous déplacer dansssrep, de lister son contenu. Qu’en concluez-vous quant à l’influence desdroits que l’on possède sur le répertoire courant? Peut-on retourner dans le répertoire parent avec ”cd..”? Pouvez-vous donner une explication?
+Nous pouvons donc lire/écrire/éxécuter un dossier et lire/écrire un fichier. Tous autres individus n'y est nullement autorisés.
 
-9.Rétablissez le droit en exécution du répertoiretest. Attribuez au fichierfichierles droits suﬀisantspour qu’une autre personne de votre groupe puisse y accéder en lecture, mais pas en écriture.
+**NB** : ainsi, grâce à *umask*, on interdit à quiconque à part nous, l’accès en lecture ou en écriture, ainsi que la traversée de nos répertoires
 
-10.Définissez un umask très restrictif qui interdit à quiconque à part vous l’accès en lecture ou en écriture,ainsi que la traversée de vos répertoires. Testez sur un nouveau fichier et un nouveau répertoire.
+11.Définissez un umask très permissif qui autorise tout le monde à lire vos fichiers et traverser vos répertoires, mais n’autorise que vous à écrire. Testez sur un nouveau fichier et un nouveau répertoire.
 
-11.Définissez un umask très permissif qui autorise tout le monde à lire vos fichiers et traverser vos réper-toires, mais n’autorise que vous à écrire. Testez sur un nouveau fichier et un nouveau répertoire.
+Commandes :
 
-12.Définissez un umask équilibré qui vous autorise un accès complet et autorise un accès en lecture auxmembres de votre groupe. Testez sur un nouveau fichier et un nouveau répertoire.
+* *umask 300*
+* *umask -S* => affiche : (u=r,g=rwx,o=rwx) => autorise tout le monde à lire nos fichiers et traverser nos répertoires, mais ne nous autorise qu'à écrire
+* *touch newupfile* => crée le fichier *newupfile*
+* *mkdir newrupep* => crée le répertoire *newuprep*
+* *ls -l* => donne pour résulat : dr--rwxrwx newuprep ; -r--rw-rw- newupfile
 
-13.Transcrivez les commandes suivantes de la notation classique à la notation octale ou vice-versa (vouspourrez vous aider de la commandestatpour valider vos réponses) :
+Nous pouvons ainsi que lire un dossier et lire un fichier. Tous autres individus peut  lire/écrire/éxécuter un dossier et lire/écrire un fichier.
+
+**NB** : ainsi, grâce à *umask*, on autorise tout le monde à lire vos fichiers et traverser vos répertoires, mais on ne s'autorise qu'à écrire
+
+12.Définissez un umask équilibré qui vous autorise un accès complet et autorise un accès en lecture aux membres de votre groupe. Testez sur un nouveau fichier et un nouveau répertoire.
+
+Commandes :
+
+* *umask 33*
+* *umask -S* => affiche : (u=rwx,g=r,o=r) => autorise l'utilisateur à lire/écrire/éxécuté mais n'autorise le reste (groupe propriétaire et les autres) qu'à lire	
+* *touch wookie* => crée le fichier *wookie*
+* *mkdir wookieup* => crée le répertoire *wookieup*
+* *ls -l* =>  donne pour résulat : drwxr--r-- wookieup ; -rw-r--r-- wookie
+
+Nous pouvons donc lire/écrire/éxécuter un dossier et lire/écrire un fichier. Tous autres individus ne peut que lire un dossier ou un fichier.
+
+**NB** : ainsi, grâce à *umask*, on s'autorise un accès complet et on autorise un accès en lecture aux membres de notre groupe.
+
+13.Transcrivez les commandes suivantes de la notation classique à la notation octale ou vice-versa (vouspourrez vous aider de la commande *stat* pour valider vos réponses) :
+
 -chmod u=rx,g=wx,o=r fic
--chmod uo+w,g-rx ficen sachant que les droits initiaux de fic sont r--r-x---
--chmod 653 ficen sachant que les droits initiaux de fic sont 711
--chmod u+x,g=w,o-r ficen sachant que les droits initiaux de fic sont r--r-x---
+=> transcription : *chmod 534 fic*
+-chmod uo+w,g-rx fic en sachant que les droits initiaux de fic sont r--r-x---
+=> transcription : *chmod u+w fic ; chmod o+w fic ; chmod g-rw fic* ou *chmod 602 fic*
+-chmod 653 fic en sachant que les droits initiaux de fic sont 711
+=> transcription : *chmod u-x fic ; chmod g-r fic ; chmod o-w fic* ou *chmod 653 fic*
+-chmod u+x,g=w,o-r fic en sachant que les droits initiaux de fic sont r--r-x---
+=> transcription : *chmod u+x fic ; chmod g-rx fic ; chmod g+w fic ; chmod o-r fic* ou *chmod 520*
 
-14.Aﬀichez les droits sur le programmepasswd. Que remarquez-vous? En aﬀichant les droits du fichier/etc/passwd, pouvez-vous justifier les permissions sur le programmepasswd?
+14.Aﬀichez les droits sur le programme *passwd*. Que remarquez-vous? En aﬀichant les droits du fichier */etc/passwd*, pouvez-vous justifier les permissions sur le programme *passwd* ?
+
+Commandes :
+
+* *stats /etc/passwd* => affiche : -rw-r--r-- => autorise l'utilisateur à lire/écrire *passwd* mais n'autorise le reste qu'à lire *passwd*
+
+
