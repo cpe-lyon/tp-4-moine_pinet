@@ -1,4 +1,128 @@
 # Compte-Rendu Administration Système (MOINE PINET)
+# Partie 1 
+##  Gestion des utilisateurs et des groupes
+
+1.Commencez par créer deux groupes groupe1 et groupe2
+
+Commandes :
+* *sudo addgroup groupe1* => Obligation de rajouter *sudo* car nous n'avons pas les droits sinon. 
+* *sudo addgroup groupe2*
+
+**NB** : on peut vérifier la création des deux groupes à l'aide de la commande *cat/etc/group | tail 2* => affiche : groupe1 :x :1001 ; groupe2 :x :1002 
+ 
+2.Créez ensuite 4 utilisateurs u1, u2, u3, u4 avec la commande useradd, en demandant la création de leur dossier personnel et avec bash pour shell 
+
+Commandes :
+* *sudo useradd u1 -m --shell /bin/bash* => création de l'utilisateur u1
+* *sudo useradd u2 -m --shell /bin/bash* 
+* *sudo useradd u3 -m --shell /bin/bash*
+* *sudo useradd u4 -m --shell /bin/bash*
+ 
+3.Ajoutez les utilisateurs dans les groupes créés : - u1, u2, u4 dans groupe1 - u2, u3, u4 dans groupe2 
+
+Commandes :
+* *sudo usermod -a -G groupe1 u1* 
+* *sudo usermod -a -G groupe1 u2* 
+* *sudo usermod -a -G groupe1 u4*
+* *sudo usermod -a -G groupe2 u2* 
+* *sudo usermod -a -G groupe2 u3* 
+* *sudo usermod -a -G groupe2 u4* 
+ 
+4.Donnez deux moyens d’afficher les membres de groupe2
+
+Commandes :
+* *cat /etc/group | grep "groupe2"*
+* *members groupe2* => ( en ayant préalablement installer le paquet members : *sudo apt install members*) 
+ 
+5.Faites de groupe1 le groupe propriétaire de /home/u1 et /home/u2 et de groupe2 le groupe propriétaire de /home/u3 et /home/u4 
+
+Commandes :
+* *sudo chown :groupe1 /home/u1*
+* *sudo chown :groupe1 /home/u2*
+* *sudo chown :groupe2 /home/u3*
+* *sudo chown :groupe2 /home/u4* 
+ 
+6.Remplacez le groupe primaire des utilisateurs : - groupe1 pour u1 et u2 - groupe2 pour u3 et u4 
+
+Commandes :
+* *sudo usermod -g groupe1 u1*
+* *sudo usermod -g groupe1 u2* 
+* *sudo usermod -g groupe2 u3*
+* *sudo usermod -g groupe2 u4* 
+ 
+7.Créez deux répertoires /home/groupe1 et /home/groupe2 pour le contenu commun aux groupes, et mettez en place les permissions permettant aux membres de chaque groupe d’écrire dans le dossier associé. 
+
+Commandes :
+* *mkdir /home/groupe1 && mkdir /home/groupe2*
+* *chown u1:groupe1 groupe1 && chown u2:groupe2 groupe2* 
+* *chmod 720 groupe1 groupe2*
+ 
+ 
+8.Comment faire pour que, dans ces dossiers, seul le propriétaire d’un fichier ait le droit de renommer ou supprimer ce fichier ? 
+
+Commandes :
+* *chmod +t /home/groupe1/ && chmod +t /home/groupe2/*
+ 
+**NB** : +t correspond au "Sticky bit", c'est-à-dire qu'il permet seulement au propriétaire du fichier, au propriétaire du dossier ou root de renommer ou supprimer des fichiers dans ce dossier. 
+ 
+9.Pouvez-vous vous connecter en tant que u1 ? Pourquoi ? 
+
+Tout compte créé sans mot de passe est inactif, jusqu’à l’attribution d’un mot de passe ; d'où l'impossibilité de se connecter à u1.
+ 
+10.Activez le compte de l’utilisateur u1 et vérifiez que vous pouvez désormais vous connecter avec son compte.  
+
+Commandes :
+* *sudo passwd u1*  #entrer mdp su u1 
+ 
+ 
+11.Quels sont l’uid et le gid de u1 ?  
+
+Commandes :
+* *id u1* => retourne uid=1001(u1) gid=1001(groupe1) groups=1001(groupe1) 
+ 
+12.Quel utilisateur a pour uid 1003 ? 
+
+Commandes :
+* *id 1003* => on trouve u3
+ 
+13.Quel est l’id du groupe groupe1 ?
+
+Commandes :
+* *cat /etc/groupe | grep groupe1* => retourne 1001 
+ 
+14.Quel groupe a pour guid 1002 ? (Rien n’empêche d’avoir un groupe dont le nom serait 1002...) 
+
+Commandes :
+* *cat /etc/groupe | grep 1002* => retourne groupe2 
+ 
+ 
+15.Retirez l’utilisateur u3 du groupe groupe2. Que se passe-t-il ? Expliquez. 
+
+Commandes :
+* *sudo gpasswd -d u3 groupe2*
+
+**NB** : l'utilisateur u3 ne peut plus accéder à /home/groupe2 (il ne fait plus partie du groupe 2) 
+ 
+16.Modifiez le compte de u4 de sorte que :
+* il expire au 1er juin 2020 : *usermod --expiredate 06/01/2019 u4*
+* il faut changer de mot de passe avant 90 jours : *chage -M 90 u4*
+* il faut attendre 5 jours pour modifier un mot de passe : *sudo chage -m 5 u4* 
+* l’utilisateur est averti 14 jours avant l’expiration de son mot de passe : *sudo chage -W 14 u4* 
+* le compte sera bloqué 30 jours après expiration du mot de passe : *sudo chage -I 30 u4 *
+ 
+17.Quel est l’interpréteur de commandes (Shell) de l’utilisateur root ? 
+ 
+C'est /bin/bash( commande : echo $SHELL) 
+
+18.A quoi correspond l’utilisateur nobody ? 
+ 
+nobody est une pseudo utilisateur qui représente un utilisateur n'ayant aucun privilège, n'étant propriétaire d'aucun fichier et n'appartenant à aucun groupe 
+ 
+19.Par défaut, combien de temps la commande sudo conserve-t-elle votre mot de passe en mémoire ? 
+Quelle commande permet de forcer sudo à oublier votre mot de passe ? 
+ 
+Par défaut, le mot de passe est gardé en mémoire pendant 15 minutes. Pour forcer l'oubli : *commande sudo -k* . 
+
 # Partie 2
 ## Gestion des permissions
 
