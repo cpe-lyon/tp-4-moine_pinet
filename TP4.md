@@ -140,7 +140,7 @@ Suivent ensuite 3 groupes de 3 symboles chacun, indiquant si le fichier (ou rép
 Pour rappel, les 3 groupes correspondent, dans cet ordre, aux droits du propriétaire, du groupe puis du reste des utilisateurs. 
 Ce sont ces lettres qui sont utilisées pour symboliser les dites permissions. Si la permission n'est pas accordée, la lettre en question est remplacé par « - ». Si l'on reprend les lettres données, dans l'ordre fourni par le système, pour lecture/écriture/exécution (read/write/execute), nous obtenons : rwx.
 
-## 2.2 Exercice
+### 2.2 Exercice
 
 1.Dans votre **$HOME**, créez un dossier *test*, et dans ce dossier un fichier *fichier* contenant quelques lignes de texte. Quels sont les droits sur *test* et *fichier* ?
 
