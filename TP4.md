@@ -13,16 +13,16 @@ Commandes :
 2.Créez ensuite 4 utilisateurs u1, u2, u3, u4 avec la commande useradd, en demandant la création de leur dossier personnel et avec bash pour shell 
 
 Commandes :
-* *sudo useradd u1 -m --shell /bin/bash* => création de l'utilisateur u1
-* *sudo useradd u2 -m --shell /bin/bash* 
-* *sudo useradd u3 -m --shell /bin/bash*
+* *sudo useradd u1 -m --shell /bin/bash* => création de l'utilisateur u1 
+* *sudo useradd u2 -m --shell /bin/bash* => *-m* : le répertoire personnel de l'utilisateur sera créé s'il n'existe pas déjà
+* *sudo useradd u3 -m --shell /bin/bash* => *--shell /bin/bash* : sélectionne le shell à utiliser pour exécuter les commandes du terminal sachant que le chemin du shell Bash est */bin/bash*. 
 * *sudo useradd u4 -m --shell /bin/bash*
  
 3.Ajoutez les utilisateurs dans les groupes créés : - u1, u2, u4 dans groupe1 - u2, u3, u4 dans groupe2 
 
 Commandes :
-* *sudo usermod -a -G groupe1 u1* 
-* *sudo usermod -a -G groupe1 u2* 
+* *sudo usermod -a -G groupe1 u1* => *-a* : ajoute l'utilisateur aux groupes supplémentaires spécifié
+* *sudo usermod -a -G groupe1 u2* => *-G* : liste de groupes supplémentaires auxquels fait également partie l'utilisateur. Si l'utilisateur fait actuellement partie d'un groupe qui n'est pas listé, l'utilisateur sera supprimé du groupe.
 * *sudo usermod -a -G groupe1 u4*
 * *sudo usermod -a -G groupe2 u2* 
 * *sudo usermod -a -G groupe2 u3* 
@@ -31,7 +31,7 @@ Commandes :
 4.Donnez deux moyens d’afficher les membres de groupe2
 
 Commandes :
-* *cat /etc/group | grep "groupe2"*
+* *cat /etc/group \| grep "groupe2"*
 * *members groupe2* => ( en ayant préalablement installer le paquet members : *sudo apt install members*) 
  
 5.Faites de groupe1 le groupe propriétaire de /home/u1 et /home/u2 et de groupe2 le groupe propriétaire de /home/u3 et /home/u4 
@@ -45,7 +45,7 @@ Commandes :
 6.Remplacez le groupe primaire des utilisateurs : - groupe1 pour u1 et u2 - groupe2 pour u3 et u4 
 
 Commandes :
-* *sudo usermod -g groupe1 u1*
+* *sudo usermod -g groupe1 u1* => *-g* : le nom ou le numéro du groupe de connexion initial de l'utilisateur
 * *sudo usermod -g groupe1 u2* 
 * *sudo usermod -g groupe2 u3*
 * *sudo usermod -g groupe2 u4* 
@@ -88,18 +88,18 @@ Commandes :
 13.Quel est l’id du groupe groupe1 ?
 
 Commandes :
-* *cat /etc/groupe | grep groupe1* => retourne 1001 
+* *cat /etc/groupe \| grep groupe1* => retourne 1001 
  
 14.Quel groupe a pour guid 1002 ? (Rien n’empêche d’avoir un groupe dont le nom serait 1002...) 
 
 Commandes :
-* *cat /etc/groupe | grep 1002* => retourne groupe2 
+* *cat /etc/groupe \| grep 1002* => retourne groupe2 
  
  
 15.Retirez l’utilisateur u3 du groupe groupe2. Que se passe-t-il ? Expliquez. 
 
 Commandes :
-* *sudo gpasswd -d u3 groupe2*
+* *sudo gpasswd -d u3 groupe2* => *-d* :  utilisateur groupe
 
 **NB** : l'utilisateur u3 ne peut plus accéder à /home/groupe2 (il ne fait plus partie du groupe 2) 
  
